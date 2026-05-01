@@ -1,0 +1,30 @@
+<apex:page controller="StudentController" docType="html-5.0">
+    <apex:form >
+        <!-- This displays our success or error messages -->
+        <apex:pageMessages />
+
+        <!-- Input Section -->
+        <apex:pageBlock title="Student Record Management">
+            <apex:pageBlockSection title="Enter Student Details" columns="1">
+                <apex:inputField value="{!student.Name}" required="true"/>
+                <apex:inputField value="{!student.Roll_No__c}" required="true"/>
+                <apex:inputField value="{!student.Class__c}" />
+                <apex:inputField value="{!student.Mobile_No__c}" />
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockButtons location="bottom">
+                <apex:commandButton value="Save Record" action="{!saveRecord}" />
+            </apex:pageBlockButtons>
+        </apex:pageBlock>
+
+        <!-- Display Section -->
+        <apex:pageBlock title="Existing Students">
+            <apex:pageBlockTable value="{!studentList}" var="stu">
+                <apex:column value="{!stu.Name}" headerValue="Student Name"/>
+                <apex:column value="{!stu.Roll_No__c}" />
+                <apex:column value="{!stu.Class__c}" />
+                <apex:column value="{!stu.Mobile_No__c}" />
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

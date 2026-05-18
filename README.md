@@ -47,39 +47,59 @@ A lightweight Student Record Management System built on the Salesforce platform.
 
 ```apex
 public class StudentController {
-    // Variable to hold the new student being entered
+
     public Student__c student { get; set; }
-    
-    // List to display existing students
+
     public List<Student__c> studentList { get; set; }
 
-    // Constructor runs when the page loads
     public StudentController() {
-        student = new Student__c(); // Initialize a blank record
-        loadStudents(); // Fetch existing records
+
+        student = new Student__c();
+
+        loadStudents();
     }
 
-    // Method to query the database for students
     public void loadStudents() {
-        studentList = [SELECT Id, Name, Roll_No__c, Class__c, Mobile_No__c 
-                       FROM Student__c 
-                       ORDER BY CreatedDate DESC];
+
+        studentList = [
+            SELECT Id,
+                   Name,
+                   Roll_Number__c,
+                   Class__c,
+                   Mobile_No__c
+            FROM Student__c
+            ORDER BY CreatedDate DESC
+        ];
     }
 
-    // Method triggered by the "Save" button
     public PageReference saveRecord() {
+
         try {
-            insert student; // Save to database
-            student = new Student__c(); // Clear the form for the next entry
-            loadStudents(); // Refresh the table
-            
-            // Show success message
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.CONFIRM, 'Student Record Saved Successfully!'));
+
+            insert student;
+
+            student = new Student__c();
+
+            loadStudents();
+
+            ApexPages.addMessage(
+                new ApexPages.Message(
+                    ApexPages.Severity.CONFIRM,
+                    'Student Record Saved Successfully!'
+                )
+            );
+
         } catch (Exception e) {
-            // Show error message if something goes wrong
-            ApexPages.addMessage(new ApexPages.Message(ApexPages.Severity.ERROR, 'Error saving record: ' + e.getMessage()));
+
+            ApexPages.addMessage(
+                new ApexPages.Message(
+                    ApexPages.Severity.ERROR,
+                    'Error saving record: ' + e.getMessage()
+                )
+            );
         }
-        return null; // Stay on the same page
+
+        return null;
     }
 }
 ```
@@ -90,34 +110,59 @@ public class StudentController {
 
 ```xml
 <apex:page controller="StudentController" docType="html-5.0">
+
     <apex:form >
-        <!-- This displays our success or error messages -->
+
+        <!-- Messages -->
         <apex:pageMessages />
 
         <!-- Input Section -->
         <apex:pageBlock title="Student Record Management">
+
             <apex:pageBlockSection title="Enter Student Details" columns="1">
+
                 <apex:inputField value="{!student.Name}" required="true"/>
-                <apex:inputField value="{!student.Roll_No__c}" required="true"/>
+
+                <apex:inputField value="{!student.Roll_Number__c}" required="true"/>
+
                 <apex:inputField value="{!student.Class__c}" />
+
                 <apex:inputField value="{!student.Mobile_No__c}" />
+
             </apex:pageBlockSection>
-            
+
             <apex:pageBlockButtons location="bottom">
-                <apex:commandButton value="Save Record" action="{!saveRecord}" />
+
+                <apex:commandButton value="Save Record"
+                                    action="{!saveRecord}" />
+
             </apex:pageBlockButtons>
+
         </apex:pageBlock>
 
         <!-- Display Section -->
         <apex:pageBlock title="Existing Students">
+
             <apex:pageBlockTable value="{!studentList}" var="stu">
-                <apex:column value="{!stu.Name}" headerValue="Student Name"/>
-                <apex:column value="{!stu.Roll_No__c}" />
-                <apex:column value="{!stu.Class__c}" />
-                <apex:column value="{!stu.Mobile_No__c}" />
+
+                <apex:column value="{!stu.Name}"
+                             headerValue="Student Name"/>
+
+                <apex:column value="{!stu.Roll_Number__c}"
+                             headerValue="Roll Number"/>
+
+                <apex:column value="{!stu.Class__c}"
+                             headerValue="Class"/>
+
+                <apex:column value="{!stu.Mobile_No__c}"
+                             headerValue="Mobile No"/>
+
             </apex:pageBlockTable>
+
         </apex:pageBlock>
+
     </apex:form>
+
 </apex:page>
 ```
 
